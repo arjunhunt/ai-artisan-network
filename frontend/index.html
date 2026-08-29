@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Artisan Commerce Network — From Craft to Customer with AI</title>
+  <meta name="description" content="Autonomous AI enablement, GI verification, and statutory fair living-wage platform for Indian artisans on ONDC.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css?v=20260829_3">
+</head>
+<body>
+
+  <!-- 1. SIH Demo & Sandbox Banner -->
+  <header class="demo-banner">
+    <div>
+      <span class="badge-pill">SIH 2026 PROTOTYPE</span>
+      <span>AI Artisan Commerce Network — <b>Demo & Sandbox Mode</b></span>
+      <span id="offlineSyncBadge" style="display:none; margin-left: 10px; font-size: 0.75rem; background: #3b82f6; color:#fff; padding: 2px 8px; border-radius: 9999px;"></span>
+    </div>
+    <div class="demo-actions">
+      <span>Persona:</span>
+      <select id="personaQuickDropdown" class="persona-select-dropdown" onchange="switchDemoUser(this.value)">
+        <optgroup label="👩‍🎨 Master Artisans">
+          <option value="DEMO-ARTISAN-001" selected>Rishikant Mishra (Paithani, Maharashtra)</option>
+          <option value="DEMO-ARTISAN-002">Meenakshi Jha (Madhubani, Bihar)</option>
+          <option value="DEMO-ARTISAN-003">Devendra Sharma (Blue Pottery, Rajasthan)</option>
+          <option value="DEMO-ARTISAN-004">Gurucharan Mohapatra (Dhokra, Odisha)</option>
+          <option value="DEMO-ARTISAN-005">Kalyanasundaram Swamy (Kanchipuram, Tamil Nadu)</option>
+          <option value="DEMO-ARTISAN-006">Debabrata Saikia (Bamboo & Cane, Assam)</option>
+          <option value="DEMO-ARTISAN-007">Moumita Banerjee (Kantha, West Bengal)</option>
+          <option value="DEMO-ARTISAN-008">Ghulam Mohammad Mir (Pashmina, Kashmir)</option>
+        </optgroup>
+        <optgroup label="🛍️ Verified Buyers">
+          <option value="DEMO-BUYER-001">Rajesh Kumar (Bengaluru)</option>
+          <option value="DEMO-BUYER-002">Priya Sharma (Mumbai)</option>
+          <option value="DEMO-BUYER-003">Amit Verma (New Delhi)</option>
+          <option value="DEMO-BUYER-004">Deepa Nair (Kochi)</option>
+          <option value="DEMO-BUYER-005">Vikram Mehta (Ahmedabad)</option>
+          <option value="DEMO-BUYER-006">Sneha Mukherjee (Kolkata)</option>
+        </optgroup>
+        <optgroup label="🏛️ Administration">
+          <option value="DEMO-ADMIN-001">SIH Admin Official (New Delhi)</option>
+        </optgroup>
+      </select>
+      <button class="btn-demo-switch" onclick="openPersonaModal()">👥 All Personas</button>
+    </div>
+  </header>
+
+  <!-- 2. Main Navigation Bar -->
+  <nav class="navbar">
+    <div class="brand-container" onclick="navigateTo('view-home')">
+      <div class="brand-logo">🧵</div>
+      <div>
+        <div class="brand-title">AI Artisan Network</div>
+        <div class="brand-tagline">FAIR WAGE & GI PROTECTED COMMERCE</div>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><button class="nav-btn active" id="nav-btn-home" onclick="navigateTo('view-home')">🏠 Home</button></li>
+      <li><button class="nav-btn" id="nav-btn-marketplace" onclick="navigateTo('view-marketplace')">🛍️ Marketplace</button></li>
+      <li><button class="nav-btn" id="nav-btn-makers" onclick="navigateTo('view-makers')">👩‍🎨 Meet the Makers</button></li>
+      <li><button class="nav-btn" id="nav-btn-studio" onclick="navigateTo('view-studio')">🎙️ Artisan Studio</button></li>
+      <li><button class="nav-btn" id="nav-btn-orders" onclick="navigateTo('view-orders')">📦 Orders & Escrow</button></li>
+      <li><button class="nav-btn" id="nav-btn-admin" onclick="navigateTo('view-admin')">🏛️ Admin Portal</button></li>
+      <li><button class="nav-btn" id="nav-btn-impact" onclick="navigateTo('view-impact')">📊 Public Impact</button></li>
+    </ul>
+
+    <div class="nav-right-controls">
+      <!-- Wishlist Button -->
+      <button class="cart-icon-btn" onclick="openWishlistModal()" title="View Wishlist" style="background: #fff1f2; border-color: #fecdd3;">
+        ❤️<span class="badge-count" id="wishlistCount" style="background: #e11d48;">0</span>
+      </button>
+
+      <!-- Cart Button -->
+      <button class="cart-icon-btn" onclick="openCartModal()" title="View Fair-Trade Cart">
+        🛒<span class="badge-count" id="cartCount">0</span>
+      </button>
+
+      <!-- AI Assistant Button -->
+      <button class="cart-icon-btn" onclick="openAssistantModal()" style="background: #fef3c7; border-color: #fde68a;" title="AI Assistant">
+        ✨
+      </button>
+
+      <!-- Active User Profile Badge -->
+      <div class="user-profile-badge" id="currentUserBadge" onclick="openPersonaModal()" title="Click to Switch Persona">
+        <span id="userRoleIcon">👩‍🎨</span>
+        <span id="currentUserName">Rishikant Mishra (Artisan)</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 3. Main Content Container -->
+  <main class="main-content">
+
+    <!-- VIEW 1: HOME & HERO -->
+    <section id="view-home" class="view-section active">
+      <div class="hero-wrapper">
+        <div class="hero-text">
+          <h1 data-i18n="hero_title">Empowering Indian Artisans with AI & Fair Wages</h1>
+          <p data-i18n="hero_subtitle">
+            Voice-first digital onboarding, GI authenticity protection, statutory living wage pricing, and direct ONDC open network connectivity.
+          </p>
+          <div class="hero-cta-group">
+            <button class="btn-primary" id="heroBtnPrimary" onclick="handleHeroPrimaryAction()">🛍️ Explore Handcrafted Products</button>
+            <button class="btn-secondary" onclick="navigateTo('view-makers')">👩‍🎨 Meet Master Artisans</button>
+            <button class="btn-secondary" onclick="openONDCModal()">🌐 Inspect ONDC Beckn Schema</button>
+          </div>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500&auto=format&fit=crop&q=80" alt="Indian Handloom" style="width: 280px; height: 280px; object-fit: cover; border-radius: 16px; box-shadow: var(--shadow-lg); border: 4px solid #fff;">
+        </div>
+      </div>
+
+      <!-- Problem vs Solution Matrix -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 32px;">
+        <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-md); padding: 20px;">
+          <h3 style="color: #991b1b; margin-bottom: 8px;">⚠️ The Artisan Problem</h3>
+          <ul style="padding-left: 20px; font-size: 0.9rem; color: #7f1d1d; line-height: 1.6;">
+            <li>Middlemen extract 60–80% of consumer retail valuation.</li>
+            <li>Rural artisans struggle with complex English digital e-commerce forms.</li>
+            <li>Counterfeits dilute Geographical Indication (GI) heritage crafts.</li>
+            <li>Artisans face predatory buyers and delayed wage payouts.</li>
+          </ul>
+        </div>
+        <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: var(--radius-md); padding: 20px;">
+          <h3 style="color: #065f46; margin-bottom: 8px;">✨ Our AI Network Solution</h3>
+          <ul style="padding-left: 20px; font-size: 0.9rem; color: #064e3b; line-height: 1.6;">
+            <li><b>Voice-to-Catalog</b> in Marathi, Hindi, Tamil, Bengali & English.</li>
+            <li><b>Statutory Fair Wage Calculator</b> protects ₹65/hr living wage.</li>
+            <li><b>Cryptographic GI Verification</b> & Computer Vision authenticity.</li>
+            <li><b>Trust Escrow State Machine</b> guarantees immediate payout upon delivery.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 4 Core Pillars Grid -->
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-icon">🎙️</div>
+          <h3>Indic Voice AI</h3>
+          <p>Artisans speak naturally in their dialect. AI extracts craft taxonomy, dimensions, and generates cultural stories.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">⚖️</div>
+          <h3>Statutory Fair Wage</h3>
+          <p>Transparent cost-plus pricing algorithms with active underpricing defense alerts to prevent exploitation.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🛡️</div>
+          <h3>GI Tag Authenticity</h3>
+          <p>Official Geographical Indication registry verification ensuring pure handloom provenance.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🔒</div>
+          <h3>10-Stage Trust Escrow</h3>
+          <p>Safe buyer payments locked until delivery confirmation and automated artisan bank release.</p>
+        </div>
+      </div>
+
+      <!-- Featured Crafts Preview -->
+      <div class="section-header">
+        <h2 class="section-title">Verified GI Handcrafted Creations</h2>
+        <button class="btn-secondary" onclick="navigateTo('view-marketplace')">View All Products →</button>
+      </div>
+      <div id="homeFeaturedProducts" class="products-grid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- VIEW 2: BUYER MARKETPLACE -->
+    <section id="view-marketplace" class="view-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Fair-Trade Artisan Marketplace</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Every purchase directly funds statutory living wages with zero middleman extraction.</p>
+        </div>
+      </div>
+
+      <!-- Natural Language AI Search Bar -->
+      <div style="background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px; box-shadow: var(--shadow-sm);">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <input type="text" id="marketplaceSearchInput" class="form-control" style="flex: 1; min-width: 240px;" placeholder="🔍 Try AI Search: 'Show me GI-certified silk saree under ₹3000 from Maharashtra'..." onkeyup="if(event.key==='Enter') executeMarketplaceSearch()">
+          <button class="btn-primary" onclick="executeMarketplaceSearch()">Search</button>
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+          <span style="font-size: 0.75rem; color: var(--text-muted); padding-top: 4px;">Quick AI Filters:</span>
+          <button class="chip-btn" onclick="applyQuickFilter('gi')">✓ GI Certified Only</button>
+          <button class="chip-btn" onclick="applyQuickFilter('maharashtra')">📍 Maharashtra (Paithani)</button>
+          <button class="chip-btn" onclick="applyQuickFilter('bihar')">📍 Bihar (Madhubani)</button>
+          <button class="chip-btn" onclick="applyQuickFilter('rajasthan')">📍 Rajasthan (Blue Pottery)</button>
+          <button class="chip-btn" onclick="applyQuickFilter('tamilnadu')">📍 Tamil Nadu (Kanchipuram)</button>
+          <button class="chip-btn" onclick="applyQuickFilter('under2000')">💰 Under ₹2,000</button>
+          <button class="chip-btn" onclick="applyQuickFilter('reset')">🔄 Clear Filters</button>
+        </div>
+      </div>
+
+      <div id="marketplaceProductsGrid" class="products-grid">
+        <!-- Loaded dynamically -->
+      </div>
+    </section>
+
+    <!-- VIEW 3: MEET THE MAKERS (ARTISAN PROFILES) -->
+    <section id="view-makers" class="view-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Meet the Master Artisans</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Verified cultural stewards preserving India's living handloom and craft traditions.</p>
+        </div>
+      </div>
+      <div id="artisansListGrid" class="products-grid">
+        <!-- Loaded dynamically -->
+      </div>
+    </section>
+
+    <!-- VIEW 4: ARTISAN STUDIO & VOICE/IMAGE ONBOARDING -->
+    <section id="view-studio" class="view-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">🎙️ Artisan Voice & Multimodal Studio</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Zero-typing onboarding: Speak your craft details or upload photos with instant AI Vision inspection.</p>
+        </div>
+        <button class="btn-secondary" onclick="openOnboardingFormModal()">📝 Complete Artisan Profile</button>
+      </div>
+
+      <!-- Quick Preset Chips for Demo -->
+      <div style="margin-bottom: 14px;">
+        <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block;">⚡ Quick Test Presets (8 Artisan Clusters):</label>
+        <div class="presets-container">
+          <button class="chip-btn active" onclick="loadPreset('paithani')">1. Paithani Saree (Rishikant Mishra, MH)</button>
+          <button class="chip-btn" onclick="loadPreset('madhubani')">2. Madhubani Painting (Meenakshi Jha, BR)</button>
+          <button class="chip-btn" onclick="loadPreset('blue_pottery')">3. Blue Pottery (Devendra Sharma, RJ)</button>
+          <button class="chip-btn" onclick="loadPreset('dhokra')">4. Dhokra Metallurgy (Gurucharan, OD)</button>
+          <button class="chip-btn" onclick="loadPreset('kanchipuram')">5. Kanchipuram Silk (Kalyanasundaram Swamy, TN)</button>
+          <button class="chip-btn" onclick="loadPreset('bamboo')">6. Bamboo Basket (Debabrata Saikia, AS)</button>
+          <button class="chip-btn" onclick="loadPreset('kantha')">7. Kantha Silk (Moumita Banerjee, WB)</button>
+          <button class="chip-btn" onclick="loadPreset('pashmina')">8. Pashmina Shawl (Ghulam Mohammad Mir, JK)</button>
+        </div>
+      </div>
+
+      <div class="studio-layout">
+        <!-- Left: Voice & Inputs + Image Drag & Drop -->
+        <div class="studio-card">
+          <!-- Voice Mic Box -->
+          <div class="voice-mic-box" id="voiceMicContainer">
+            <button class="mic-btn-large" id="micBtn" onclick="toggleVoiceRecording()">🎙️</button>
+            <div style="margin-top: 10px; font-weight: 700; font-size: 1.05rem;" id="micStatusText">Tap to Speak (Bhashini AI)</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 3px;">Supported: Marathi, Hindi, Tamil, Bengali, English</div>
+          </div>
+
+          <!-- Drag and Drop Product Picture Area -->
+          <div class="form-group">
+            <label>📸 Product Picture (Drag & Drop or Upload)</label>
+            <div class="drag-drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+              <div class="drag-drop-icon">📷</div>
+              <div style="font-weight: 600; font-size: 0.9rem;">Drag & drop craft photo here or <span style="color: var(--primary);">browse</span></div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">PNG, JPG, WebP supported • Instant AI Computer Vision Analysis</div>
+              <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
+            </div>
+
+            <!-- Image Preview Box -->
+            <div class="image-preview-box" id="imagePreviewContainer">
+              <img id="imagePreviewImg" src="" alt="Product Preview">
+              <button class="remove-btn" onclick="removeUploadedImage()" title="Remove Image">✕</button>
+            </div>
+
+            <!-- AI Vision Inspection Output Badge -->
+            <div id="aiVisionResultBox" style="display: none;" class="ai-vision-badge">
+              <div style="font-weight: bold; margin-bottom: 2px;">👁️ AI Vision Analysis:</div>
+              <div id="aiVisionResultText">Motif: Peacock Zari • Weft density: Authentic Handloom (95% Confidence)</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Spoken Voice Transcript / Dialect Text</label>
+            <textarea id="voiceTranscriptInput" class="form-control" rows="3" placeholder="Speak your craft details or edit here..."></textarea>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Artisan Name</label>
+              <input type="text" id="studioArtisanName" class="form-control" value="Rishikant Mishra">
+            </div>
+            <div class="form-group">
+              <label>State / Regional Cluster</label>
+              <select id="studioStateSelect" class="form-control" onchange="fetchStateWageBenchmark(this.value)">
+                <option value="Maharashtra" selected>Maharashtra (₹65.00/hr)</option>
+                <option value="Bihar">Bihar (₹62.00/hr)</option>
+                <option value="Rajasthan">Rajasthan (₹65.00/hr)</option>
+                <option value="Odisha">Odisha (₹60.00/hr)</option>
+                <option value="Tamil Nadu">Tamil Nadu (₹68.00/hr)</option>
+                <option value="West Bengal">West Bengal (₹55.00/hr)</option>
+                <option value="Jammu & Kashmir">Jammu & Kashmir (₹75.00/hr)</option>
+                <option value="Assam">Assam (₹58.00/hr)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Raw Material Cost (₹)</label>
+              <input type="number" id="studioMaterialCost" class="form-control" value="800" oninput="runPriceCalculation()">
+            </div>
+            <div class="form-group">
+              <label>Total Labor Hours (Loom Time)</label>
+              <input type="number" id="studioLaborHours" class="form-control" value="15" oninput="runPriceCalculation()">
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Intended Price (₹) <span style="font-size: 0.72rem; color: var(--primary);">Tests Underpricing!</span></label>
+              <input type="number" id="studioIntendedPrice" class="form-control" value="900" oninput="runPriceCalculation()">
+            </div>
+            <div class="form-group">
+              <label>Target Profit Margin (%)</label>
+              <input type="number" id="studioMarginPct" class="form-control" value="20" oninput="runPriceCalculation()">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;">
+            <button class="btn-primary" onclick="runCompleteAIPipeline()" style="flex: 1; min-width: 180px;">⚡ Run AI Extraction & Pricing</button>
+            <button class="btn-secondary" onclick="saveDraftOffline()">💾 Save Offline Draft</button>
+          </div>
+        </div>
+
+        <!-- Right: AI Outputs, Transparent Price & GI Check -->
+        <div class="studio-card">
+          <h3 style="font-size: 1.15rem; margin-bottom: 12px;">📊 AI Extraction & Fair Pricing Output</h3>
+
+          <div id="underpricingAlertContainer"></div>
+
+          <!-- Price Breakdown Table -->
+          <div class="price-breakdown-card" id="priceBreakdownCard">
+            <div class="breakdown-row"><span>Raw Materials:</span> <b id="lblBreakdownMaterial">₹800.00</b></div>
+            <div class="breakdown-row"><span>Protected Labor Wage (15 hrs @ ₹65/hr):</span> <b id="lblBreakdownLabor" style="color: var(--secondary);">₹975.00</b></div>
+            <div class="breakdown-row"><span>Overheads & Packaging:</span> <b id="lblBreakdownOverhead">₹200.00</b></div>
+            <div class="breakdown-row"><span>Logistics & SpeedPost:</span> <b id="lblBreakdownLogistics">₹150.00</b></div>
+            <div class="breakdown-row"><span>Artisan Margin (20%):</span> <b id="lblBreakdownMargin" style="color: var(--primary);">₹469.00</b></div>
+            <div class="breakdown-row total"><span>Fair Retail Selling Price:</span> <b id="lblBreakdownTotal">₹2,344.00</b></div>
+          </div>
+
+          <!-- GI Tag Verification Status -->
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-md); padding: 12px; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <b style="color: #166534; font-size: 0.9rem;">🛡️ GI Tag Verification</b>
+                <div style="font-size: 0.78rem; color: #15803d;" id="giStatusText">GI-MH-001 (Paithani Sarees) • VERIFIED</div>
+              </div>
+              <button class="btn-secondary" style="padding: 3px 8px; font-size: 0.75rem;" onclick="openGICertificateModal()">View Certificate</button>
+            </div>
+          </div>
+
+          <!-- Heritage Story Preview -->
+          <div class="form-group">
+            <label>AI Generated Heritage Story & Marketing Copy</label>
+            <textarea id="studioHeritageStory" class="form-control" rows="3" readonly></textarea>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn-primary" onclick="publishStudioListing()" style="flex: 1; min-width: 180px;">🚀 Publish to ONDC Marketplace</button>
+            <button class="btn-secondary" onclick="openMarketingKitModal()">📱 Marketing Kit</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: ORDERS, ESCROW TRACKER & CHAT -->
+    <section id="view-orders" class="view-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">📦 Orders, Trust Escrow & Live Tracking</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Orders reflect directly to their respective artisan and buyer in real time.</p>
+        </div>
+        <!-- Persona Orders Indicator -->
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-full); padding: 6px 14px; font-size: 0.85rem; font-weight: 600;">
+          👤 Orders for <span id="filterPersonaName" style="color: var(--primary);">Rishikant Mishra</span>
+        </div>
+      </div>
+
+      <div id="ordersListContainer">
+        <!-- Orders injected dynamically with live state buttons -->
+      </div>
+    </section>
+
+    <!-- VIEW 6: ADMIN PORTAL & AUDIT LOG -->
+    <section id="view-admin" class="view-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">🏛️ SIH Administrative Control Center</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Ecosystem governance, artisan onboarding approvals, escrow oversight & audit log.</p>
+        </div>
+        <button class="btn-secondary" onclick="reseedDemoDatabase()" title="Reset all demo data">🔄 Reseed Demo Data</button>
+      </div>
+
+      <!-- Admin Metrics Cards -->
+      <div class="pillars-grid" id="adminMetricsGrid">
+        <!-- Injected via JS -->
+      </div>
+
+      <!-- Moderation & Verification Table -->
+      <div style="background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px; overflow-x: auto;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 12px;">👩‍🎨 Artisan Onboarding Moderation</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Artisan</th>
+              <th>State Cluster</th>
+              <th>Craft</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminArtisanTableBody">
+            <!-- Dynamic -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Seasonal Demand Forecasting -->
+      <div style="background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 12px;">📈 AI Craft Demand Intelligence</h3>
+        <div id="adminDemandGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+          <!-- Dynamic -->
+        </div>
+      </div>
+
+      <!-- Immutable Audit Action Log -->
+      <div style="background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; overflow-x: auto;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 12px;">📜 Admin Action Audit Log</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Actor</th>
+              <th>Action</th>
+              <th>Entity</th>
+              <th>Change</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody id="adminAuditLogBody">
+            <!-- Dynamic -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- VIEW 7: PUBLIC IMPACT & TRANSPARENCY DASHBOARD -->
+    <section id="view-impact" class="view-section">
+      <!-- Hero Banner -->
+      <div class="impact-hero-banner">
+        <span style="font-size: 0.82rem; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); padding: 4px 12px; border-radius: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">National Heritage & Fair-Trade Impact</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.1rem; margin: 12px 0 8px; color: #fff;">Empowering India's Cultural Stewards Through Direct Fair Wages</h2>
+        <p style="font-size: 0.95rem; color: #cbd5e1; max-width: 780px; line-height: 1.6;">
+          Real-time audited transparency data tracking living wage disbursements, GI counterfeit elimination, rural women empowerment, and middleman margin bypass across all participating state clusters.
+        </p>
+      </div>
+
+      <!-- 6 Key Impact Stat Pillars -->
+      <div class="impact-stats-grid-6" id="publicImpactMetricsGrid">
+        <!-- Dynamically injected via JavaScript with real-time statistics -->
+      </div>
+
+      <!-- Fair Trade vs Traditional Commerce Comparison -->
+      <div class="comparison-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h3 style="font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 4px;">⚖️ Fair Trade Economics vs Traditional Middleman Supply Chain</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">How AI Artisan Network restructures the consumer rupee directly in favor of the artisan.</p>
+          </div>
+          <span style="background: #f0fdf4; border: 1px solid #86efac; color: #166534; font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px;">+64% Net Living Wage Gain</span>
+        </div>
+
+        <div class="comparison-grid">
+          <!-- Traditional Model -->
+          <div class="comp-col-bad">
+            <div style="font-weight: 700; font-size: 1rem; color: #991b1b; display: flex; align-items: center; gap: 6px;">
+              <span>❌</span> Traditional Retail / Middleman Model
+            </div>
+            <div style="font-size: 0.8rem; color: #7f1d1d; margin: 6px 0 12px;">Unorganized traders, wholesalers, and commercial markups.</div>
+            
+            <div style="font-size: 0.82rem; font-weight: 600; color: #334155; display: flex; justify-content: space-between;">
+              <span>Artisan Direct Share</span>
+              <span style="color: #dc2626; font-weight: 700;">18% (₹420 on ₹2,344)</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 18%; background: #ef4444;"></div>
+            </div>
+
+            <div style="font-size: 0.82rem; font-weight: 600; color: #334155; display: flex; justify-content: space-between;">
+              <span>Middleman / Wholesaler Margin</span>
+              <span style="color: #991b1b; font-weight: 700;">65% (₹1,524)</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 65%; background: #f87171;"></div>
+            </div>
+
+            <div style="font-size: 0.82rem; font-weight: 600; color: #334155; display: flex; justify-content: space-between;">
+              <span>Payment Cycle Delay</span>
+              <span style="color: #991b1b;">60–90 Days (Credit)</span>
+            </div>
+          </div>
+
+          <!-- AI Artisan Network Model -->
+          <div class="comp-col-good">
+            <div style="font-weight: 700; font-size: 1rem; color: #166534; display: flex; align-items: center; gap: 6px;">
+              <span>✅</span> AI Artisan Network (ONDC + Escrow)
+            </div>
+            <div style="font-size: 0.8rem; color: #14532d; margin: 6px 0 12px;">Statutory living wage algorithmic floor & zero middleman fee.</div>
+            
+            <div style="font-size: 0.82rem; font-weight: 600; color: #334155; display: flex; justify-content: space-between;">
+              <span>Artisan Direct Take-Home (Wage + Materials)</span>
+              <span style="color: #16a34a; font-weight: 700;">82% (₹1,922 on ₹2,344)</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 82%; background: #22c55e;"></div>
+            </div>
+
+            <div style="font-size: 0.82rem; font-weight: 600; color: #334155; display: flex; justify-content: space-between;">
+              <span>Platform Extraction / Commission</span>
+              <span style="color: #166534; font-weight: 700;">0% (Zero Platform Fee)</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 0%; background: #22c55e;"></div>
+            </div>
+
+            <div style="font-size: 0.82rem; font-weight: 600; color: #334155; display: flex; justify-content: space-between;">
+              <span>Escrow Release Payout</span>
+              <span style="color: #166534; font-weight: 700;">Instant upon Delivery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- State Clusters & GI Heritage Transparency Table -->
+      <div style="background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 22px; margin-bottom: 28px; box-shadow: var(--shadow-sm); overflow-x: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h3 style="font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 4px;">🗺️ 8 State Craft Clusters — Live Transparency Ledger</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Audited wages, GI registry authentication numbers, and sustainability indices.</p>
+          </div>
+          <span style="font-size: 0.8rem; background: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 6px; font-weight: bold;">8 Clusters Synchronized</span>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>State Cluster</th>
+              <th>Representative Master Artisan</th>
+              <th>Protected Craft</th>
+              <th>GI Registry Reg #</th>
+              <th>Protected Living Wage</th>
+              <th>Women Guild Ratio</th>
+              <th>Sustainability Rating</th>
+            </tr>
+          </thead>
+          <tbody id="impactClustersTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Live Trust Escrow Audit Stream -->
+      <div style="background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 22px; box-shadow: var(--shadow-sm);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h3 style="font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 4px;">📜 Cryptographic Escrow & GI Inspection Stream</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Live immutable log of automated escrow fund locks and artisan disbursements.</p>
+          </div>
+          <button class="btn-secondary" style="padding: 4px 10px; font-size: 0.8rem;" onclick="loadPublicImpactData()">🔄 Refresh Live Stream</button>
+        </div>
+        <div id="impactEscrowLedgerBox" style="display: grid; gap: 10px;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 4. MODALS & POPUPS -->
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Switch Persona Modal (All 8 Artisans, 6 Buyers, Admin) -->
+  <div id="personaModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 820px;">
+      <button class="modal-close-btn" onclick="closeModal('personaModal')">×</button>
+      <h2 style="font-family: var(--font-serif); margin-bottom: 6px;">👥 Switch Demo Persona</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Select any Master Artisan or Verified Buyer to experience their tailored dashboard & orders.</p>
+
+      <h3 style="font-size: 1rem; color: var(--primary); margin-top: 12px;">👩‍🎨 Master Artisans (8 State Clusters)</h3>
+      <div class="persona-cards-grid" id="personaArtisansGrid">
+        <!-- Loaded dynamically -->
+      </div>
+
+      <h3 style="font-size: 1rem; color: var(--secondary); margin-top: 18px;">🛍️ Verified Buyers (6 Indian Cities)</h3>
+      <div class="persona-cards-grid" id="personaBuyersGrid">
+        <!-- Loaded dynamically -->
+      </div>
+
+      <h3 style="font-size: 1rem; color: #1e293b; margin-top: 18px;">🏛️ Platform Administration</h3>
+      <div class="persona-cards-grid" id="personaAdminGrid">
+        <!-- Loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Wishlist Modal -->
+  <div id="wishlistModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 650px;">
+      <button class="modal-close-btn" onclick="closeModal('wishlistModal')">×</button>
+      <h2 style="font-family: var(--font-serif); margin-bottom: 6px;">❤️ My Handcrafted Wishlist</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Curated authentic GI heritage items saved for your collection.</p>
+      <div id="wishlistItemsContainer">
+        <!-- Loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Detail Modal -->
+  <div id="productDetailModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeModal('productDetailModal')">×</button>
+      <div id="productDetailBody">
+        <!-- Loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart & Checkout Modal with Breakdown & Quantity Controls -->
+  <div id="cartModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 680px;">
+      <button class="modal-close-btn" onclick="closeModal('cartModal')">×</button>
+      <h2 style="font-family: var(--font-serif); margin-bottom: 6px;">🛍️ Fair-Trade Cart & Checkout</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Every rupee directly supports artisan livelihoods with zero middleman extraction.</p>
+      
+      <!-- Cart Items List with Quantity Increment/Decrement -->
+      <div id="cartItemsContainer">
+        <!-- Dynamic items -->
+      </div>
+
+      <!-- Live Transparent Financial Breakdown -->
+      <div id="cartFinancialBreakdown">
+        <!-- Dynamic breakdown -->
+      </div>
+
+      <!-- Shipping Destination PIN Code -->
+      <div style="background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin: 16px 0;">
+        <div class="form-group">
+          <label style="font-weight: 600;">📍 Delivery Postal PIN Code (ONDC Logistics)</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="checkoutPincodeInput" class="form-control" value="560103" placeholder="Enter 6-digit PIN code">
+            <button class="btn-secondary" onclick="checkDeliveryPincode()">Check Serviceability</button>
+          </div>
+          <div id="pincodeStatusMsg" style="font-size: 0.8rem; margin-top: 6px;"></div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Buyer Full Name</label>
+            <input type="text" id="checkoutBuyerName" class="form-control" value="Rajesh Kumar">
+          </div>
+          <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="text" id="checkoutBuyerPhone" class="form-control" value="+91 98111 22334">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Complete Shipping Address</label>
+          <textarea id="checkoutBuyerAddress" class="form-control" rows="2">Flat 402, Green Glen Layout, Bellandur, Bengaluru, Karnataka</textarea>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btnProceedToPayment" style="width: 100%; justify-content: center; font-size: 1.05rem; padding: 14px;" onclick="openDemoPaymentPortal()">
+        💳 Proceed to Demo Payment Gateway →
+      </button>
+    </div>
+  </div>
+
+  <!-- Interactive Demo Payment Portal Modal -->
+  <div id="demoPaymentModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 620px;">
+      <button class="modal-close-btn" onclick="closeModal('demoPaymentModal')">×</button>
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+        <span style="font-size: 1.8rem;">🔒</span>
+        <div>
+          <h2 style="font-family: var(--font-serif); font-size: 1.4rem; margin: 0;">AI Artisan Trust Escrow Payment Portal</h2>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">Smart India Fair-Trade Sandbox Gateway (ONDC Protocol)</div>
+        </div>
+      </div>
+
+      <!-- Order Value Summary Box -->
+      <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px 18px; margin: 14px 0; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Total Escrow Amount to Lock</div>
+          <div style="font-size: 1.6rem; font-weight: 800; color: var(--primary);" id="paymentPortalTotalVal">₹0</div>
+        </div>
+        <span class="escrow-secure-badge" style="margin-bottom: 0;">🛡️ 100% Escrow Protected</span>
+      </div>
+
+      <!-- Payment Methods Tabs -->
+      <div class="payment-tabs-header">
+        <button class="payment-tab-btn active" id="payTabBtnUpi" onclick="switchPaymentTab('upi')">📱 UPI / QR Code</button>
+        <button class="payment-tab-btn" id="payTabBtnCard" onclick="switchPaymentTab('card')">💳 Debit / Credit Card</button>
+        <button class="payment-tab-btn" id="payTabBtnNet" onclick="switchPaymentTab('net')">🏦 Net Banking</button>
+      </div>
+
+      <!-- Tab 1: UPI / QR Code -->
+      <div id="payTabContentUpi">
+        <div class="upi-qr-card">
+          <div style="font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 10px;">Scan with Any UPI App to Authorize Escrow</div>
+          <div class="qr-code-mock">
+            <div class="qr-scanner-line"></div>
+            <div style="font-size: 2.8rem;">🏁</div>
+            <div style="font-size: 0.7rem; font-weight: 700; color: #334155; margin-top: 4px;">AI-ARTISAN-ESCROW</div>
+          </div>
+          <div style="font-size: 0.82rem; color: var(--text-muted);">UPI ID: <code style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-weight: 600;">artisan.network@upi</code></div>
+          <div class="upi-app-badges">
+            <span class="upi-app-pill">Google Pay</span>
+            <span class="upi-app-pill">PhonePe</span>
+            <span class="upi-app-pill">Paytm</span>
+            <span class="upi-app-pill">BHIM UPI</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Debit / Credit Card -->
+      <div id="payTabContentCard" style="display: none;">
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; margin-bottom: 16px;">
+          <div class="form-group">
+            <label>Card Number (Demo Sandbox)</label>
+            <input type="text" class="form-control" value="4532 8819 7721 9042" readonly style="font-family: monospace; letter-spacing: 1px;">
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Expiry Date</label>
+              <input type="text" class="form-control" value="08/29" readonly>
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="password" class="form-control" value="882" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Cardholder Name</label>
+            <input type="text" id="demoCardHolderName" class="form-control" value="Rajesh Kumar">
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Net Banking -->
+      <div id="payTabContentNet" style="display: none;">
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; margin-bottom: 16px;">
+          <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; display: block;">Select Demo Bank:</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <label style="border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; background: #fff;">
+              <input type="radio" name="demoBank" checked> State Bank of India
+            </label>
+            <label style="border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; background: #fff;">
+              <input type="radio" name="demoBank"> HDFC Bank
+            </label>
+            <label style="border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; background: #fff;">
+              <input type="radio" name="demoBank"> ICICI Bank
+            </label>
+            <label style="border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; background: #fff;">
+              <input type="radio" name="demoBank"> Axis Bank
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Escrow Security Assurance -->
+      <div class="escrow-secure-badge">
+        <b>🛡️ Smart Escrow Guarantee:</b> Funds are held in a 10-stage regulatory escrow account until you receive delivery and verify the GI authenticity seal. The artisan receives guaranteed payment upon delivery.
+      </div>
+
+      <!-- Pay Button with Loading Simulator -->
+      <button class="btn-primary" id="btnSimulatePayment" style="width: 100%; justify-content: center; font-size: 1.1rem; padding: 14px;" onclick="simulateAuthorizeEscrowPayment()">
+        ✨ Authorize & Lock Escrow Payment (Demo)
+      </button>
+    </div>
+  </div>
+
+  <!-- Order Chat & Translation Modal -->
+  <div id="chatModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 600px;">
+      <button class="modal-close-btn" onclick="closeModal('chatModal')">×</button>
+      <h3 style="font-size: 1.15rem; margin-bottom: 4px;" id="chatModalTitle">💬 Direct Artisan ↔ Buyer Chat</h3>
+      <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Automatic Indic Dialect AI Translation Active</div>
+      <div id="chatMessagesBox" style="height: 280px; overflow-y: auto; background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px; margin-bottom: 12px;">
+        <!-- Messages -->
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="chatMessageInput" class="form-control" placeholder="Type in your language (e.g. Marathi or English)..." onkeyup="if(event.key==='Enter') sendChatMessage()">
+        <button class="btn-primary" onclick="sendChatMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GI Certificate Modal -->
+  <div id="giCertModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 550px; text-align: center;">
+      <button class="modal-close-btn" onclick="closeModal('giCertModal')">×</button>
+      <div style="font-size: 3rem; margin-bottom: 10px;">📜</div>
+      <h2 style="font-family: var(--font-serif); color: #166534;">GI AUTHENTICITY CERTIFICATE</h2>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">National Geographical Indication Registry Sandbox</div>
+      <div style="background: #f0fdf4; border: 2px dashed #86efac; border-radius: var(--radius-md); padding: 18px; text-align: left; font-size: 0.9rem; line-height: 1.6;" id="giCertModalBody">
+        <!-- Dynamic -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ONDC Inspector Modal -->
+  <div id="ondcModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 750px;">
+      <button class="modal-close-btn" onclick="closeModal('ondcModal')">×</button>
+      <h2 style="font-family: var(--font-serif); margin-bottom: 8px;">🌐 ONDC Beckn Protocol JSON-LD Schema</h2>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Real-time generated Beckn v1.2.0 Discovery and Catalog schema ready for buyer app consumption.</div>
+      <pre id="ondcSchemaDisplay" style="background: #0f172a; color: #38bdf8; padding: 16px; border-radius: var(--radius-md); font-size: 0.8rem; max-height: 380px; overflow: auto; font-family: monospace;"></pre>
+    </div>
+  </div>
+
+  <!-- Marketing Kit Modal -->
+  <div id="marketingModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 600px;">
+      <button class="modal-close-btn" onclick="closeModal('marketingModal')">×</button>
+      <h2 style="font-family: var(--font-serif); margin-bottom: 8px;">📱 1-Click WhatsApp & Instagram Kit</h2>
+      <div class="form-group">
+        <label>WhatsApp Broadcast Message</label>
+        <textarea id="mktWhatsAppText" class="form-control" rows="5" readonly></textarea>
+        <button class="btn-secondary" style="margin-top: 6px; padding: 4px 10px; font-size: 0.8rem;" onclick="copyToClipboard('mktWhatsAppText')">📋 Copy WhatsApp Text</button>
+      </div>
+      <div class="form-group">
+        <label>Instagram Post & Hashtags</label>
+        <textarea id="mktInstaText" class="form-control" rows="5" readonly></textarea>
+        <button class="btn-secondary" style="margin-top: 6px; padding: 4px 10px; font-size: 0.8rem;" onclick="copyToClipboard('mktInstaText')">📋 Copy Instagram Caption</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Assistant Modal -->
+  <div id="assistantModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 550px;">
+      <button class="modal-close-btn" onclick="closeModal('assistantModal')">×</button>
+      <h2 style="font-family: var(--font-serif); margin-bottom: 8px;">✨ Contextual AI Assistant</h2>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">Ask questions regarding fair pricing, GI heritage rules, or craft recommendations.</div>
+      <div id="assistantHistory" style="height: 220px; overflow-y: auto; background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px; margin-bottom: 12px;">
+        <div style="font-size: 0.88rem; color: #334155;">👋 Namaskar! How can I assist you with artisan fair commerce today?</div>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="assistantInput" class="form-control" placeholder="Ask: 'How much should I charge for 15 hours?' or 'Show GI gifts under 2000'..." onkeyup="if(event.key==='Enter') queryAssistant()">
+        <button class="btn-primary" onclick="queryAssistant()">Ask AI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Footer with Legal & Trust Pages -->
+  <footer style="background: #1c1917; color: #a8a29e; padding: 40px 24px; margin-top: 60px; font-size: 0.85rem;">
+    <div style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
+      <div>
+        <div style="color: #fff; font-size: 1.1rem; font-weight: bold; margin-bottom: 10px;">AI Artisan Network</div>
+        <p>A Smart India Hackathon (SIH 2026) Prototype built for the theme <i>Heritage, Culture & AI Digital Inclusion</i>.</p>
+      </div>
+      <div>
+        <div style="color: #fff; font-weight: 600; margin-bottom: 10px;">Platform Links</div>
+        <ul style="list-style: none; line-height: 2;">
+          <li><a href="#" onclick="navigateTo('view-marketplace'); return false;" style="color: #a8a29e; text-decoration: none;">Marketplace</a></li>
+          <li><a href="#" onclick="navigateTo('view-studio'); return false;" style="color: #a8a29e; text-decoration: none;">Artisan Studio</a></li>
+          <li><a href="#" onclick="navigateTo('view-makers'); return false;" style="color: #a8a29e; text-decoration: none;">Meet the Makers</a></li>
+          <li><a href="#" onclick="navigateTo('view-impact'); return false;" style="color: #a8a29e; text-decoration: none;">Public Impact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="color: #fff; font-weight: 600; margin-bottom: 10px;">Trust & Legal</div>
+        <ul style="list-style: none; line-height: 2;">
+          <li><a href="#" onclick="showToast('🔒 Trust Escrow Policy: All buyer funds held in 10-stage escrow until delivery confirmation.', 'info', 3000); return false;" style="color: #a8a29e; text-decoration: none;">Trust Escrow Terms</a></li>
+          <li><a href="#" onclick="showToast('🛡️ GI Authenticity Policy: All GI items cross-verified against National Registry.', 'info', 3000); return false;" style="color: #a8a29e; text-decoration: none;">GI Protection Policy</a></li>
+          <li><a href="#" onclick="showToast('⚖️ Living Wage Policy: Statutory wage floor of ₹65/hr enforced by algorithm.', 'info', 3000); return false;" style="color: #a8a29e; text-decoration: none;">Statutory Wage Policy</a></li>
+          <li><a href="#" onclick="showToast('✨ AI Usage Disclosure: Voice & translation powered by Bhashini & Indic NLP.', 'info', 3000); return false;" style="color: #a8a29e; text-decoration: none;">AI Usage Disclosure</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid #292524; color: #78716c;">
+      Built with ❤️ for Indian Artisans • Smart India Hackathon 2026 • SIH TEAM A
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/static/i18n.js?v=20260829_3"></script>
+  <script src="/static/offline_drafts.js?v=20260829_3"></script>
+  <script src="/static/app.js?v=20260829_3"></script>
+</body>
+</html>
